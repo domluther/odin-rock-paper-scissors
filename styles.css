@@ -1,0 +1,48 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+:root {
+  /* CSS HEX */
+  --malachite: #04e762ff;
+  --selective-yellow: #f5b700ff;
+  --celestial-blue: #00a1e4ff;
+  --mexican-pink: #dc0073ff;
+  --chartreuse: #89fc00ff;
+}
+
+body {
+  background-color: var(--malachite);
+  font-family: Consolas, monaco, monospace;
+}
+
+h1 {
+  color: var(--mexican-pink);
+  font-size: 48px;
+}
+
+.button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+
+  background-color: var(--celestial-blue);
+  color: var(--selective-yellow);
+  font-size: large;
+  padding: 0.5em 1.5em;
+  /* Rounded corners */
+  border-radius: 0.5em;
+  border: none;
+  text-decoration: none;
+  font-weight: 400;
+  text-align: center;
+  max-width: 180px;
+  margin-top: 20px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+}

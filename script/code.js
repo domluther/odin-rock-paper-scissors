@@ -3,6 +3,23 @@
 const roundsToPlay = 3;
 
 const resultsEle = document.querySelector(".results");
+const playButtons = document.querySelector(".playButtons");
+
+const game = {
+  // Centrally stored options makes it easier to compare
+  // multiple options could be implemented with an array for beats/losesTo
+  options: {
+    rock: { beats: "scissors", losesTo: "paper" },
+    paper: { beats: "rock", losesTo: "scissors" },
+    scissors: { beats: "paper", losesTo: "rock" },
+  },
+};
+const gameState = {
+  computerScore: 0,
+  playerScore: 0,
+  roundsPlayed: 0,
+  totalRounds: 5,
+};
 
 const log = function (message) {
   resultsEle.innerHTML += `${message} <br>`;
@@ -15,91 +32,54 @@ const getComputerChoice = function (validGameChoices) {
   return validGameChoices[randomIndex];
 };
 
-const getPlayerChoice = function (validGameChoices) {
-  // Prompt for choice
-  let playerChoice;
-  // Validation - could add alert if not met
-  let valid = false;
-  while (!valid) {
-    playerChoice = prompt("(r)ock, (s)cissors or (p)aper?");
-    valid = validGameChoices.includes(playerChoice);
-  }
-  // only return first character - all I need
-
-  return playerChoice.charAt(0);
-};
-
 const compareChoices = function (computerChoice, playerChoice) {
-  // lower case both inputs to start with to make checking easier
-  let computerChoiceLower = computerChoice.toLowerCase();
-  let playerChoiceLower = playerChoice.toLowerCase();
+  // Help debug
+  log(`${playerChoice} v ${computerChoice}`);
 
-  log(`${computerChoiceLower} v ${playerChoiceLower}`);
+  // Same? A tie
+  if (computerChoice === playerChoice) return "a tie - need to play again";
 
-  if (computerChoiceLower === playerChoiceLower)
-    return "a tie - need to play again";
+  // Player wins? Let them know
+  if (game.options[playerChoice].beats === computerChoice)
+    return `${playerChoice} beats ${computerChoice} - player wins`;
 
-  if (computerChoiceLower === "r" && playerChoiceLower === "p")
-    return "paper beats rock - player wins";
-
-  if (computerChoiceLower === "r" && playerChoiceLower === "s")
-    return "rock beats scissors - computer wins";
-
-  if (computerChoiceLower === "p" && playerChoiceLower === "r")
-    return "paper beats rock - computer wins";
-
-  if (computerChoiceLower === "s" && playerChoiceLower === "r")
-    return "rock beats scissors - player wins";
-
-  if (computerChoiceLower === "s" && playerChoiceLower === "p")
-    return "scissors beats paper - computer wins";
-
-  if (computerChoiceLower === "p" && playerChoiceLower === "s")
-    return "scissors beats paper - player wins";
-
+  // Only other option is computer wins
+  return `${computerChoice} beats ${playerChoice} - computer wins`;
   // Return a string depending on winner
 };
 
-const game = function (rounds) {
+const playRound = function (playerChoice) {
   // Array of the possible choices
-  const validGameChoices = ["r", "p", "s"];
-  let computerScore = 0;
-  let playerScore = 0;
 
-  // initialise condition
-  let roundsPlayed = 0;
-  let keepGoing = roundsPlayed < rounds;
+  if (gameState.roundsPlayed === gameState.totalRounds) return;
 
-  // repeat the game loop rounds times
-  while (keepGoing) {
-    // console.group would be better if these two lines only happened once per round
-    console.group(`Round ${roundsPlayed + 1}`);
-    log(`Round ${roundsPlayed + 1}`);
-    const computerChoice = getComputerChoice(validGameChoices);
-    const playerChoice = getPlayerChoice(validGameChoices);
+  //
+  const validGameChoices = Object.keys(game.options);
 
-    // Compare them
-    const resultMessage = compareChoices(computerChoice, playerChoice);
-    log(resultMessage);
+  log(`Round ${gameState.roundsPlayed + 1}`);
+  const computerChoice = getComputerChoice(validGameChoices);
 
-    // keep track of score - who won? increment score + rounds. tie? replay
-    if (resultMessage.includes("player")) {
-      playerScore++;
-      console.groupEnd(`Round ${roundsPlayed + 1}`);
-      roundsPlayed++;
-    }
-    if (resultMessage.includes("computer")) {
-      computerScore++;
-      console.groupEnd(`Round ${roundsPlayed + 1}`);
-      roundsPlayed++;
-    }
+  // Compare them
+  const resultMessage = compareChoices(computerChoice, playerChoice);
+  log(resultMessage);
 
-    // Stop when played enough rounds
-    if (roundsPlayed === rounds) keepGoing = false;
+  // keep track of score - who won? increment score + rounds. tie? replay
+  if (resultMessage.includes("player")) {
+    gameState.playerScore++;
+    console.groupEnd(`Round ${gameState.roundsPlayed + 1}`);
+    gameState.roundsPlayed++;
+  }
+  if (resultMessage.includes("computer")) {
+    gameState.computerScore++;
+    console.groupEnd(`Round ${gameState.roundsPlayed + 1}`);
+    gameState.roundsPlayed++;
   }
 
+  // Stop when played enough rounds
+
   // report winner
-  reportWinner(computerScore, playerScore);
+  if (gameState.roundsPlayed === gameState.totalRounds)
+    reportWinner(gameState.computerScore, gameState.playerScore);
 };
 
 const reportWinner = function (computerScore, playerScore) {
@@ -113,4 +93,11 @@ const reportWinner = function (computerScore, playerScore) {
   log(`${winner} wins ${score}.`);
 };
 
-game(roundsToPlay);
+playButtons.addEventListener("click", function (e) {
+  const btn = e.target.closest(".button");
+  // Make sure a button was clicked
+  if (!btn) return;
+
+  // Start a new round with this choice
+  playRound(btn.dataset.choice);
+});
