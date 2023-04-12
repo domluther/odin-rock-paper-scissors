@@ -46,3 +46,28 @@ h1 {
   display: flex;
   flex-direction: column;
 }
+
+.labels,
+.choices,
+.scores {
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
+  font-size: medium;
+}
+
+.playerChoice,
+.computerChoice {
+}
+
+.thisRound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 180px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}

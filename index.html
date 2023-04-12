@@ -19,13 +19,29 @@
     </form>
     
     <div class="playButtons">
-      <a class="button" data-choice="rock">Rock 🪨</a>
-      <a class="button" data-choice="paper">Paper 📄</a>
-      <a class="button" data-choice="scissors">Scissors ✂️</a>  
+      <a class="button" data-choice="🪨">Rock 🪨</a>
+      <a class="button" data-choice="📄">Paper 📄</a>
+      <a class="button" data-choice="✂️">Scissors ✂️</a>  
     </div>
 
-    <div class="lastRound"></div>
-    <div class="results"></div>
+    <div class="thisRound">
+      <p class="roundNumber"></p>
+      <div class="labels">
+        <div class="playerLabel">🧒</div>
+        <div class="computerLabel">💻</div>
+      </div>
+      <div class="choices">
+        <div class="playerChoice"></div>
+        <div class="computerChoice"></div>
+      </div>
+      <div class="scores">
+        <div class="playerScore">0</div>
+        <div class="computerScore">0</div>
+      </div>
+    </div>
+
+    <p class="winner"> </p>
+    <a class="newGameButton button hidden">New game 🔄</a>  
 
   </body>
 </html>
