@@ -56,8 +56,8 @@ h1 {
   font-size: medium;
 }
 
-.playerChoice,
-.computerChoice {
+.roundNumber {
+  font-weight: bolder;
 }
 
 .thisRound {
@@ -66,8 +66,19 @@ h1 {
   justify-content: center;
   max-width: 180px;
   text-align: center;
+  margin-left: 120px;
+  margin-top: 20px;
 }
 
 .hidden {
   display: none;
+}
+
+.winner {
+  margin-top: 30px;
+  margin-left: 150px;
+}
+
+.newGameButton {
+  margin-left: 130px;
 }
