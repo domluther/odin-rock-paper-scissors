@@ -1,9 +1,8 @@
 "use strict";
-// Set this value here
-const roundsToPlay = 3;
 
 const resultsEle = document.querySelector(".results");
 const playButtons = document.querySelector(".playButtons");
+const difficultySelector = document.querySelector("#difficultySelector");
 
 const game = {
   // Centrally stored options makes it easier to compare
@@ -13,6 +12,7 @@ const game = {
     paper: { beats: "rock", losesTo: "scissors" },
     scissors: { beats: "paper", losesTo: "rock" },
   },
+  mode: "normal",
 };
 const gameState = {
   computerScore: 0,
@@ -66,16 +66,12 @@ const playRound = function (playerChoice) {
   // keep track of score - who won? increment score + rounds. tie? replay
   if (resultMessage.includes("player")) {
     gameState.playerScore++;
-    console.groupEnd(`Round ${gameState.roundsPlayed + 1}`);
     gameState.roundsPlayed++;
   }
   if (resultMessage.includes("computer")) {
     gameState.computerScore++;
-    console.groupEnd(`Round ${gameState.roundsPlayed + 1}`);
     gameState.roundsPlayed++;
   }
-
-  // Stop when played enough rounds
 
   // report winner
   if (gameState.roundsPlayed === gameState.totalRounds)
@@ -101,3 +97,17 @@ playButtons.addEventListener("click", function (e) {
   // Start a new round with this choice
   playRound(btn.dataset.choice);
 });
+
+difficultySelector.addEventListener("change", function (e) {
+  log(`Difficulty set to ${e.target.value}`);
+  resetGame();
+  game.mode = e.target.value;
+});
+
+const resetGame = function () {
+  log("Game reset");
+  gameState.computerScore = 0;
+  gameState.playerScore = 0;
+  gameState.roundsPlayed = 0;
+  gameState.totalRounds = 5;
+};
