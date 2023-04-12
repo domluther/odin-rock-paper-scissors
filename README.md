@@ -14,3 +14,8 @@ Rock Paper Scissors based on The Odin Project https://www.theodinproject.com/les
 ### Version 2 - UI
 
 - Uses buttons to play the game instead of prompt
+- Has a difficulty mode
+  - Easy mode means the computer has to try agian if they win
+  - Hard mode means the computer gets to try again if it loses
+- Uses emojis frequently
+- Could do with better css to centralise properly and make it more responsive.
